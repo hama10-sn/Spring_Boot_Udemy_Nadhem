@@ -2,9 +2,11 @@ package com.mballo.produits;
 
 import com.mballo.produits.entities.Produit;
 import com.mballo.produits.repository.ProduitRepository;
+import com.mballo.produits.service.ProduitService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,9 @@ class ProduitsApplicationTests {
 
 	@Autowired
 	private ProduitRepository produitRepository;
+
+	@Autowired
+	ProduitService produitService;
 
 	/*@Test
 	void contextLoads() {
@@ -52,6 +57,24 @@ class ProduitsApplicationTests {
 		}
 	}
 
+	@Test
+	public void testFindByNomProduitsContains(){
+		Page<Produit> prods = produitService.getAllProduitsParPage(0, 2);
+
+		System.out.println(prods.getSize());
+		System.out.println(prods.getTotalElements());
+		System.out.println(prods.getTotalPages());
+
+//		Expression lambda
+		prods.getContent().forEach(p -> {
+			System.out.println(p.toString());
+		});
+
+//		Equivalent de l'expression lambda précédent
+/*		for (Produit p: prods.getContent()){
+			System.out.println(p);
+		}*/
+	}
 
 
 }
