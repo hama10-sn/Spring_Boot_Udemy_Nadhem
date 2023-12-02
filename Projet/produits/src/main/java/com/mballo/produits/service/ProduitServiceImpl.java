@@ -2,6 +2,7 @@ package com.mballo.produits.service;
 
 import com.mballo.produits.entities.Produit;
 import com.mballo.produits.repository.ProduitRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Service
 public class ProduitServiceImpl implements ProduitService {
 
+    @Autowired
     ProduitRepository produitRepository;
     @Override
     public Produit saveProduit(Produit p) {
