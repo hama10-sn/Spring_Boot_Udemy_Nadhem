@@ -3,6 +3,7 @@ package com.mballo.produits.controllers;
 import com.mballo.produits.entities.Produit;
 import com.mballo.produits.service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -44,21 +45,50 @@ public class ProduitController {
         return "createProduit";
     }
 
-    @RequestMapping("/ListeProduits")
+   /* @RequestMapping("/ListeProduits")
     public String listeProduits(ModelMap modelMap) {
 
         List<Produit> prods = produitService.listProduits();
         modelMap.addAttribute("produits", prods);
 
         return "listeProduits";
+    }*/
+
+//    Liste produit qui prend en compte la pagination
+    @RequestMapping("/ListeProduits")
+    public String listeProduits(ModelMap modelMap,
+                                @RequestParam(name = "page", defaultValue = "0") int page,
+                                @RequestParam(name = "size", defaultValue = "3") int size) {
+
+        Page<Produit> prods = produitService.getAllProduitsParPage(page, size);
+        modelMap.addAttribute("produits", prods);
+        modelMap.addAttribute("pages", new int[prods.getTotalPages()]);
+        modelMap.addAttribute("currentPage", page);
+        modelMap.addAttribute("size", size);
+        return "listeProduits";
     }
 
-    @RequestMapping("/supprimerProduit")
+    /*@RequestMapping("/supprimerProduit")
     public String supprimerProduit(@RequestParam("id") Long id, ModelMap modelMap) {
 
         produitService.deleteProduitById(id);
         List<Produit> prods = produitService.listProduits();
         modelMap.addAttribute("produits", prods);
+        return "listeProduits";
+    }*/
+
+    @RequestMapping("/supprimerProduit")
+    public String supprimerProduit(@RequestParam("id") Long id,
+                                   @RequestParam(name = "page", defaultValue = "0") int page,
+                                   @RequestParam(name = "size", defaultValue = "3") int size,
+                                   ModelMap modelMap) {
+
+        produitService.deleteProduitById(id);
+        Page<Produit> prods = produitService.getAllProduitsParPage(page, size);
+        modelMap.addAttribute("produits", prods);
+        modelMap.addAttribute("pages", new int[prods.getTotalPages()]);
+        modelMap.addAttribute("currentPage", page);
+        modelMap.addAttribute("size", size);
         return "listeProduits";
     }
 
