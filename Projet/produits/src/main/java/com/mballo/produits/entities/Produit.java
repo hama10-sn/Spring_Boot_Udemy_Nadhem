@@ -1,9 +1,6 @@
 package com.mballo.produits.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -16,6 +13,8 @@ public class Produit {
     private String nomProduit;
     private Double prixProduit;
     private Date dateCreation;
+    @ManyToOne
+    private Categorie categorie;
 
     public Produit() {
     }
@@ -55,6 +54,14 @@ public class Produit {
 
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
+    }
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
     }
 
     @Override
