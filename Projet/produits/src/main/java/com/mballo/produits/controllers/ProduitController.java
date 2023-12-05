@@ -5,7 +5,6 @@ import com.mballo.produits.service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,7 +31,8 @@ public class ProduitController {
     @RequestMapping("/showCreate")
     public String showCreate(ModelMap modelMap) {
         modelMap.addAttribute("produit", new Produit());
-        return "createProduit";
+        modelMap.addAttribute("mode", "new");
+        return "formProduit";
     }
 
    /* @RequestMapping("/saveProduit")
@@ -62,10 +62,10 @@ public class ProduitController {
     @RequestMapping("/saveProduit")
     public String saveProduit(@Valid Produit produit, BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()) return "createProduit";
+        if(bindingResult.hasErrors()) return "formProduit";
 
         produitService.saveProduit(produit);
-        return "createProduit";
+        return "formProduit";
     }
 
    /* @RequestMapping("/ListeProduits")
@@ -120,7 +120,8 @@ public class ProduitController {
 
         Produit prod = produitService.getProduit(id);
         modelMap.addAttribute("produit", prod);
-        return "editerProduit";
+        modelMap.addAttribute("mode", "edit");
+        return "formProduit";
     }
 
     @RequestMapping("/updateProduit")
